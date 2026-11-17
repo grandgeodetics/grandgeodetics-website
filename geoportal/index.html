@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Malawi Geoportal · Grand Geodetics</title>
+<meta name="description" content="Open Malawi map data in your browser: boundaries, districts, lakes, rivers, roads, railway and towns. Find a place, measure and download GeoJSON.">
+<link rel="canonical" href="https://grandgeodetics.pages.dev/geoportal/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Grand Geodetics · Land Studio">
+<meta property="og:locale" content="en_GB">
+<meta property="og:title" content="Malawi Geoportal · Grand Geodetics">
+<meta property="og:description" content="Open Malawi map data in your browser: boundaries, districts, lakes, rivers, roads, railway and towns. Find a place, measure and download GeoJSON.">
+<meta property="og:url" content="https://grandgeodetics.pages.dev/geoportal/">
+<meta property="og:image" content="https://grandgeodetics.pages.dev/assets/img/og/geoportal.jpg">
+<meta property="og:image:secure_url" content="https://grandgeodetics.pages.dev/assets/img/og/geoportal.jpg">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Malawi Geoportal · Grand Geodetics">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Malawi Geoportal · Grand Geodetics">
+<meta name="twitter:description" content="Open Malawi map data in your browser: boundaries, districts, lakes, rivers, roads, railway and towns. Find a place, measure and download GeoJSON.">
+<meta name="twitter:image" content="https://grandgeodetics.pages.dev/assets/img/og/geoportal.jpg">
+<meta name="twitter:image:alt" content="Malawi Geoportal · Grand Geodetics">
+<meta name="theme-color" content="#a9c5dc">
+<meta name="color-scheme" content="light">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="/favicon-32.png" sizes="32x32" type="image/png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="manifest" href="/site.webmanifest">
+<link rel="preload" href="/assets/fonts/outfit-latin-300-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/outfit-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/assets/css/site.css">
+<link rel="stylesheet" href="/assets/css/sky.css">
+<link rel="preload" href="/assets/img/icons.svg" as="image" type="image/svg+xml">
+<script src="/assets/js/config.js"></script>
+<script src="/assets/js/content.js"></script>
+<style>
+html,body{height:100%}body{overflow:hidden}
+.gp{display:grid;grid-template-rows:auto 1fr;height:100vh;height:100dvh}
+.gp-top{position:relative;overflow:hidden;isolation:isolate;display:flex;align-items:center;gap:12px;padding:10px max(16px,env(safe-area-inset-right,0px)) 10px max(16px,env(safe-area-inset-left,0px));color:#eef5fb}
+.gp-top > *:not(.ir):not(.grain){position:relative;z-index:2}
+.gp-top .brand{color:#fff}.gp-top .brand small{display:block;font-size:12px;color:rgba(238,245,251,.65);font-weight:400;letter-spacing:0}
+.gp-top .brand span{line-height:1.15}
+.gp-top .acts{margin-left:auto;display:flex;gap:8px;align-items:center}
+.gp-top .btn-line{min-height:40px}
+.gp-body{display:grid;grid-template-columns:340px minmax(0,1fr);min-height:0}
+.gp-panel{background:var(--paper);border-right:1px solid var(--line);overflow:auto;padding:18px;display:flex;flex-direction:column;gap:20px}
+.gp-panel h2{font-size:15px;font-weight:500;color:var(--text);margin-bottom:10px;display:flex;align-items:center;gap:8px;letter-spacing:0}
+.gp-panel h2 .ic{color:var(--blue)}
+.lyr{display:grid;grid-template-columns:22px 18px minmax(0,1fr) auto;gap:8px;align-items:center;padding:8px 0;border-bottom:1px solid var(--line);font-size:15px}
+.lyr input{width:18px;height:18px;accent-color:#8e1b2a}.lyr small{color:var(--muted);font-size:12px}.sw{width:18px;height:14px;border-radius:3px;border:1.5px solid}.sw.line{height:0;border:0;border-top:3px solid;border-radius:0}.sw.pt{width:10px;height:10px;border-radius:50%;border:2px solid #fff;box-shadow:0 0 0 1px #0d2440;justify-self:center}
+.lyr a{font-size:13px;text-decoration:none;padding:6px 10px;border-radius:999px;box-shadow:0 0 0 1px var(--line) inset;color:var(--blue)}.lyr a:hover{box-shadow:0 0 0 1px var(--blue) inset}
+.gp-panel select,.gp-panel input[type=search]{width:100%;font:inherit;font-size:15px;padding:10px 12px;border:1px solid var(--line);border-radius:12px;min-height:44px;background:var(--page);color:var(--text)}
+.info{background:var(--page);border-radius:14px;padding:14px;font-size:14px;color:var(--body);box-shadow:inset 3px 0 0 #8e1b2a}.info b{display:block;font-size:17px;font-weight:500;color:var(--text);margin-bottom:4px}
+.tools{display:flex;gap:8px;flex-wrap:wrap}
+.tools .btn.on{background:#8e1b2a;color:#fff;box-shadow:none}
+.coords{font-size:13px;color:var(--muted);font-variant-numeric:tabular-nums;line-height:1.6}
+#map{position:relative;min-height:0;background:#e9eff5}
+.mtip{background:#0b3561;color:#fff;border-radius:8px;padding:4px 8px;font-size:13px;white-space:nowrap}
+.gp-toggle{display:none}
+.credit{font-size:12px;color:var(--muted)}
+.ol-control button{background:#0b3561!important;border-radius:8px!important}.ol-scale-line{background:rgba(11,53,97,.8)!important;border-radius:8px!important}
+@media (max-width:820px){.gp-body{grid-template-columns:minmax(0,1fr);position:relative}.gp-panel{position:absolute;z-index:5;left:0;right:0;bottom:0;max-height:62%;border-right:0;border-top:1px solid var(--line);border-radius:18px 18px 0 0;box-shadow:0 -10px 30px rgba(4,22,45,.18);transform:translateY(calc(100% - 64px));transition:transform .3s var(--ease);padding-bottom:calc(18px + env(safe-area-inset-bottom,0px))}.gp-panel.open{transform:none}.gp-panel::before{content:"";width:40px;height:4px;border-radius:4px;background:var(--line);align-self:center;margin:-6px 0 -8px}.gp-toggle{display:inline-flex}.gp-top .hide-sm{display:none}}
+</style>
+<link rel="stylesheet" href="/assets/vendor/ol.css">
+</head>
+<body>
+<div class="gp">
+<header class="gp-top">
+<div class="ir" aria-hidden="true"><i></i><b></b></div><div class="grain"></div>
+<a class="brand" href="/"><img src="/assets/img/orb.svg" alt="" width="30" height="30"><span>Malawi Geoportal<small>by Grand Geodetics</small></span></a>
+<div class="acts"><a class="btn btn-line btn-sm hide-sm" href="/data/"><svg class="ic" aria-hidden="true"><use href="/assets/img/icons.svg#i-database"/></svg>Open data</a><a class="btn btn-hot btn-sm hide-sm" href="/#download"><svg class="ic dn" aria-hidden="true"><use href="/assets/img/icons.svg#i-download-simple"/></svg>Get Land Studio</a><button class="btn btn-line btn-sm gp-toggle" id="gpToggle" type="button" aria-expanded="false" aria-controls="gpPanel"><svg class="ic" aria-hidden="true"><use href="/assets/img/icons.svg#i-stack"/></svg>Layers and tools</button></div>
+</header>
+<div class="gp-body">
+<aside class="gp-panel" id="gpPanel" aria-label="Layers and tools">
+<div><h2><svg class="ic" aria-hidden="true"><use href="/assets/img/icons.svg#i-magnifying-glass"/></svg>Find a place</h2><label class="sr" for="gpFind" style="position:absolute;left:-999px">District or town</label><input id="gpFind" type="search" list="gpList" placeholder="Type a district or town" autocomplete="off"><datalist id="gpList"></datalist><p id="gpFindMsg" class="credit" style="margin-top:6px"></p></div>
+<div><h2><svg class="ic" aria-hidden="true"><use href="/assets/img/icons.svg#i-stack"/></svg>Layers</h2><div id="gpLayers"></div></div>
+<div><h2><svg class="ic" aria-hidden="true"><use href="/assets/img/icons.svg#i-map-trifold"/></svg>Background</h2><label for="gpBase" style="position:absolute;left:-999px">Background map</label><select id="gpBase"><option value="osm">OpenStreetMap</option><option value="none">No background (fastest)</option></select></div>
+<div><h2><svg class="ic" aria-hidden="true"><use href="/assets/img/icons.svg#i-ruler"/></svg>Tools</h2><div class="tools"><button class="btn btn-soft btn-sm" id="gpMeasure" type="button" aria-pressed="false"><svg class="ic" aria-hidden="true"><use href="/assets/img/icons.svg#i-ruler"/></svg>Measure distance</button><button class="btn btn-soft btn-sm" id="gpHome" type="button"><svg class="ic" aria-hidden="true"><use href="/assets/img/icons.svg#i-arrows-out"/></svg>Whole country</button><button class="btn btn-soft btn-sm" id="gpShare" type="button"><svg class="ic" aria-hidden="true"><use href="/assets/img/icons.svg#i-link"/></svg>Copy link to this view</button></div><p id="gpToolMsg" class="credit" style="margin-top:8px" role="status" aria-live="polite"></p></div>
+<div class="info" id="gpInfo"><b>Click the map</b>Click a district, town, road, river or lake to see its name and size.</div>
+<div class="coords" id="gpCoords">Move the pointer over the map to read coordinates.</div>
+<p class="credit">Boundaries: geoBoundaries (CC BY 4.0). Lakes, rivers, roads, railway and towns: Natural Earth (public domain). Background: © OpenStreetMap contributors. For reference only; not an official survey. <a href="/data/">About the data</a></p>
+</aside>
+<div id="map" role="application" aria-label="Map of Malawi"></div>
+</div>
+</div>
+<script src="/assets/vendor/ol.js"></script>
+<script src="/assets/vendor/proj4.js"></script>
+<script src="/assets/js/geoportal.js" defer></script>
+</body>
+</html>

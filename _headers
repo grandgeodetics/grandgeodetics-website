@@ -1,0 +1,33 @@
+# Cloudflare Pages reads this file: security headers for every page, long caching for files that rarely change.
+/*
+  X-Content-Type-Options: nosniff
+  X-Frame-Options: SAMEORIGIN
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: camera=(self), microphone=(), geolocation=()
+  Strict-Transport-Security: max-age=31536000
+
+/assets/img/*
+  Cache-Control: public, max-age=2592000
+
+/assets/video/*
+  Cache-Control: public, max-age=2592000
+
+/assets/vendor/*
+  Cache-Control: public, max-age=2592000
+
+/assets/fonts/*
+  Cache-Control: public, max-age=31536000, immutable
+  Access-Control-Allow-Origin: *
+
+/assets/img/og/*
+  Cache-Control: public, max-age=604800
+
+/data/*.geojson
+  Cache-Control: public, max-age=86400
+  Access-Control-Allow-Origin: *
+
+/verify/plans.json
+  Cache-Control: no-cache
+
+/assets/*.pdf
+  Cache-Control: public, max-age=86400

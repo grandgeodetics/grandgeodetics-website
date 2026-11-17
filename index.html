@@ -1,0 +1,502 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Grand Geodetics</title>
+<meta property="og:title" content="Grand Geodetics"><meta property="og:description" content="Drone mapping, surveying and Land Studio — made in Malawi."><meta property="og:image" content="/assets/img/og/home.jpg"><meta name="twitter:card" content="summary_large_image">
+<meta name="description" content="Grand Geodetics — drone mapping, surveying and Land Studio, the desktop GIS for Malawi's land offices.">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml"><link rel="icon" href="/favicon-32.png" sizes="32x32"><link rel="apple-touch-icon" href="/apple-touch-icon.png"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="https://grandgeodetics.pages.dev/">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,400&family=Manrope:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --page:#a9c5dc; --sky-top:#c6dde6; --sky-mid:#cfe3ea; --glow:#e4f4fb; --shade:#7d9db1; --shade-d:#6a8ca2;
+  --ink:#1d3a4f; --text:#4c6a7e; --soft:#6f8da0; --white:#fff; --blue:#0b6cf0; --blue-d:#0757c7; --deep:#0f3f72;
+  --glass:rgba(255,255,255,.14); --glass-bd:rgba(255,255,255,.55);
+  --serif:"Bodoni Moda",Didot,"Times New Roman",serif; --sans:Manrope,"Segoe UI",system-ui,sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{background:var(--page)}
+body{font-family:var(--sans);color:var(--ink);background:var(--page);-webkit-font-smoothing:antialiased;min-height:100vh}
+a{color:inherit;text-decoration:none}
+:focus-visible{outline:2px solid var(--blue);outline-offset:3px;border-radius:10px}
+
+/* the framed stage */
+.stage{position:relative;margin:24px;min-height:calc(100vh - 48px);border-radius:32px;overflow:hidden;
+  background:
+    radial-gradient(60% 55% at 58% 92%, var(--glow) 0%, rgba(228,244,251,0) 70%),
+    radial-gradient(70% 60% at 0% 100%, var(--shade) 0%, rgba(125,157,177,0) 62%),
+    radial-gradient(60% 60% at 100% 100%, var(--shade-d) 0%, rgba(106,140,162,0) 60%),
+    linear-gradient(180deg, var(--sky-top) 0%, var(--sky-mid) 48%, #b9d3df 100%)}
+#sky{position:fixed;inset:0;width:100vw;height:100vh;z-index:2;pointer-events:none}
+.sky-room{display:none}
+
+/* nav */
+.nav{position:absolute;z-index:6;top:0;left:0;right:0;display:flex;align-items:center;gap:28px;padding:30px 44px}
+.logo{display:flex;align-items:center;gap:10px;font-weight:600;font-size:15px;color:#fff;letter-spacing:.1px}
+.logo img{width:34px;height:34px;filter:drop-shadow(0 2px 6px rgba(15,63,114,.25))}
+.links{display:flex;gap:6px;margin-left:auto;margin-right:auto}
+.links a{font-size:14px;color:var(--text);padding:9px 16px;border-radius:999px;border:1px solid transparent;transition:border-color .2s,color .2s}
+.links a:hover{color:var(--ink)}
+.links a.on{border-color:rgba(76,106,126,.28);color:var(--ink)}
+.pill-w{background:#fff;color:var(--ink);font-size:14px;font-weight:600;padding:11px 20px;border-radius:999px;box-shadow:0 6px 18px rgba(29,58,79,.08)}
+
+/* ghost wordmark behind the drone */
+.ghost{position:absolute;z-index:1;left:0;right:0;top:19%;text-align:center;font-family:var(--serif);font-weight:400;
+  font-size:clamp(84px,16.5vw,300px);line-height:.9;letter-spacing:-.02em;white-space:nowrap;
+  background:linear-gradient(180deg,rgba(255,255,255,.62) 0%,rgba(255,255,255,.18) 70%,rgba(255,255,255,0) 100%);
+  -webkit-background-clip:text;background-clip:text;color:transparent;user-select:none;pointer-events:none}
+
+/* hero copy */
+.copy{position:absolute;z-index:5;left:56px;bottom:150px;max-width:560px}
+.copy h1{white-space:nowrap;font-weight:400;font-size:clamp(38px,4.6vw,66px);line-height:1.02;letter-spacing:-.025em;color:#fff;text-shadow:0 2px 24px rgba(29,58,79,.12)}
+.copy h1 span{display:block;padding-left:1.05em}
+.copy h1 em{font-style:normal;color:rgba(255,255,255,.55)}
+.copy p{margin:18px 0 0 calc(clamp(38px,4.6vw,66px)*1.05);font-size:15px;line-height:1.45;color:rgba(255,255,255,.86);max-width:270px}
+.ctas{display:flex;gap:12px;margin:34px 0 0 calc(clamp(38px,4.6vw,66px)*1.05)}
+.btn-b{white-space:nowrap;display:inline-flex;align-items:center;gap:18px;background:var(--blue);color:#fff;font-size:16px;font-weight:500;padding:8px 8px 8px 24px;border-radius:999px;box-shadow:0 10px 28px rgba(11,108,240,.3);transition:background .2s,transform .2s}
+.btn-b:hover{background:var(--blue-d)}.btn-b:active{transform:scale(.97)}
+.btn-b i{width:40px;height:40px;border-radius:50%;background:#fff;display:grid;place-items:center;color:var(--blue)}
+.btn-w{white-space:nowrap;display:inline-flex;align-items:center;background:#fff;color:var(--ink);font-size:16px;font-weight:500;padding:0 24px;border-radius:999px;height:56px;transition:transform .2s}
+.btn-w:active{transform:scale(.97)}
+
+/* cards */
+.cards{position:absolute;z-index:5;right:44px;bottom:44px;display:grid;grid-template-columns:236px 236px 300px;gap:18px;align-items:end}
+.card{position:relative;border-radius:28px;padding:24px;min-height:196px;color:#fff;transition:transform .35s cubic-bezier(.2,.8,.2,1)}
+.card:hover{transform:translateY(-4px)}
+.glass{background:linear-gradient(160deg,rgba(255,255,255,.24),rgba(120,152,174,.16));border:1px solid var(--glass-bd);
+  -webkit-backdrop-filter:blur(14px) saturate(1.2);backdrop-filter:blur(14px) saturate(1.2);box-shadow:inset 0 1px 0 rgba(255,255,255,.5),0 18px 40px rgba(29,58,79,.1)}
+.arrow{position:absolute;top:18px;right:18px;width:42px;height:42px;border-radius:50%;display:grid;place-items:center;background:rgba(255,255,255,.22);color:#fff}
+.chip{display:inline-block;font-size:12px;border:1px solid rgba(255,255,255,.65);border-radius:999px;padding:3px 10px;margin-bottom:12px}
+.card h3{font-weight:400;font-size:21px;line-height:1.15;letter-spacing:-.01em}
+.c1{display:flex;align-items:flex-end;gap:14px;padding-left:18px}
+.c1 svg.pin{flex:none;width:58px;height:74px;filter:drop-shadow(0 10px 14px rgba(29,58,79,.25))}
+/* white card with the notch and the floating orb */
+.c2{background:linear-gradient(180deg,#fff 0%,rgba(255,255,255,.88) 100%);color:var(--ink);border-radius:30px;margin-top:86px;box-shadow:0 18px 40px rgba(29,58,79,.1)}
+.c2::before{content:"";position:absolute;left:0;top:-86px;width:150px;height:110px;background:inherit;border-radius:30px 30px 0 0;background:#fff}
+.c2 .notch{position:absolute;left:150px;top:-30px;width:30px;height:30px;background:radial-gradient(circle at 100% 0,transparent 29px,#fff 30px)}
+.c2 .orb{position:absolute;left:26px;top:-70px;width:86px;height:86px;filter:drop-shadow(0 14px 18px rgba(15,63,114,.35));animation:none}
+.c2 .arrow{background:#fff;color:var(--ink);box-shadow:0 4px 14px rgba(29,58,79,.12)}
+.c2 h3{color:var(--ink)}
+.c2 p{margin-top:14px;font-size:14px;line-height:1.4;color:var(--text);max-width:200px}
+.c3 .big{font-weight:300;font-size:84px;line-height:.9;letter-spacing:-.04em}
+.c3 .big small{font-size:30px;letter-spacing:0;margin-left:4px}
+.c3 p{margin:16px 0 0 48px;font-size:14.5px;line-height:1.4;color:rgba(255,255,255,.92)}
+.badge{position:absolute;z-index:5;right:44px;bottom:322px;display:flex;align-items:center;gap:0;border:1px solid rgba(255,255,255,.7);border-radius:999px;padding:3px 22px 3px 3px}
+.badge .dots{display:flex}
+.badge .dots span{width:44px;height:44px;border-radius:50%;border:2px solid rgba(255,255,255,.9);margin-right:-12px;display:grid;place-items:center;color:#fff}
+.badge .dots span:nth-child(1){background:#0f3f72}.badge .dots span:nth-child(2){background:#1a5c9e}.badge .dots span:nth-child(3){background:#2a78c2}.badge .dots span:nth-child(4){background:#5d9bd5}
+.badge b{margin-left:26px;font-weight:400;font-size:17px;color:rgba(255,255,255,.75)}.badge b strong{font-weight:500;color:#fff;margin-left:10px;font-size:20px}
+
+/* below the fold: one compact strip */
+.strip{display:grid;grid-template-columns:1.2fr 1fr 1fr 1fr;gap:22px;align-items:center;margin:0 24px 24px;padding:34px 44px;border-radius:32px;background:rgba(255,255,255,.22);border:1px solid rgba(255,255,255,.5)}
+.strip .lead{font-size:22px;line-height:1.25;color:#fff;font-weight:400}
+.svc{display:flex;gap:14px;align-items:flex-start;color:var(--ink)}
+.svc i{flex:none;width:44px;height:44px;border-radius:14px;background:#fff;display:grid;place-items:center;color:var(--blue);box-shadow:0 6px 16px rgba(29,58,79,.08)}
+.svc b{display:block;font-weight:600;font-size:15px}.svc span{font-size:13.5px;color:var(--text);line-height:1.4}
+footer{display:flex;flex-wrap:wrap;gap:10px 28px;justify-content:space-between;margin:0 24px 28px;padding:0 44px;font-size:13px;color:var(--text)}
+footer b{color:var(--ink);font-weight:600}
+
+/* entrance: hidden until the drone has finished its flight */
+.rv{opacity:0;transform:translateY(22px);transition:opacity .9s cubic-bezier(.2,.8,.2,1),transform .9s cubic-bezier(.2,.8,.2,1)}
+.ghost.rv{transform:scale(1.04);letter-spacing:.06em;transition:opacity 1.6s ease,transform 1.8s cubic-bezier(.2,.8,.2,1),letter-spacing 1.8s cubic-bezier(.2,.8,.2,1)}
+.go .rv{opacity:1;transform:none}.go .ghost.rv{letter-spacing:-.02em}
+.d1{transition-delay:.1s}.d2{transition-delay:.25s}.d3{transition-delay:.4s}.d4{transition-delay:.55s}.d5{transition-delay:.7s}
+@media (prefers-reduced-motion:reduce){.rv,.ghost.rv{transition:none;opacity:1;transform:none}}
+
+@media (max-width:1280px){.cards{grid-template-columns:210px 220px 260px;gap:14px}.c3 .big{font-size:70px}.copy{bottom:250px}}
+@media (max-width:1060px){
+  .stage{min-height:auto;padding-bottom:24px}.links{display:none}.nav{padding:22px 24px}.pill-w{margin-left:auto}
+  .ghost{top:100px;font-size:16.5vw}
+  .sky-room{display:block;height:62vw;max-height:520px;margin-top:70px}
+  .copy,.cards,.badge{position:relative;left:auto;right:auto;bottom:auto}
+  .copy{padding:0 24px;max-width:none}.copy p,.ctas{margin-left:0}.copy h1 span{padding-left:.6em}
+  .badge{margin:28px 24px 0;width:auto;max-width:calc(100% - 48px)}.badge b{font-size:14px;margin-left:20px}.badge b strong{font-size:15px}
+  .cards{grid-template-columns:1fr;margin:24px 24px 0;gap:16px}.c2{margin-top:86px}
+  
+}
+@media (max-width:520px){.stage{margin:12px;border-radius:24px}.ctas{flex-wrap:wrap}.btn-w{height:56px}}
+
+/* ===== pages 2–4 ===== */
+.page{position:relative;margin:0 24px 24px;border-radius:32px;overflow:hidden;min-height:calc(100vh - 48px)}
+.pg-sky{background:radial-gradient(70% 60% at 30% 50%, #e2f2f8 0%, rgba(226,242,248,0) 70%),linear-gradient(180deg,#c3dbe5 0%,#cfe3ea 50%,#b5cfdc 100%)}
+.pg-soft{background:linear-gradient(180deg,#d3e6ee 0%,#c4dbe6 100%)}
+.pg-end{background:radial-gradient(60% 60% at 80% 0%, #e4f4fb 0%, rgba(228,244,251,0) 70%),linear-gradient(180deg,#bcd5e1 0%,#a9c5d6 100%)}
+.wrap{position:relative;z-index:5;padding:110px 56px 64px;max-width:1360px;margin:0 auto}
+.ghost2{position:absolute;z-index:1;left:0;right:0;top:40px;text-align:center;font-family:var(--serif);font-size:clamp(84px,15vw,270px);line-height:.9;white-space:nowrap;letter-spacing:-.02em;
+  background:linear-gradient(180deg,rgba(255,255,255,.55),rgba(255,255,255,0) 90%);-webkit-background-clip:text;background-clip:text;color:transparent;pointer-events:none;will-change:transform}
+.kicker{display:inline-block;font-size:13px;color:var(--ink);border:1px solid rgba(29,58,79,.25);border-radius:999px;padding:6px 14px;margin-bottom:18px}
+.h2{font-weight:400;font-size:clamp(34px,4vw,56px);line-height:1.04;letter-spacing:-.025em;color:var(--ink)}
+.h2 em{font-style:normal;color:var(--soft)}
+.lede{margin-top:18px;font-size:16px;line-height:1.55;color:var(--text);max-width:46ch}
+/* cursor spotlight (pages 2–3) */
+.spot::after{content:"";position:absolute;inset:0;z-index:0;pointer-events:none;background:radial-gradient(420px circle at var(--mx,50%) var(--my,50%),rgba(255,255,255,.42),rgba(255,255,255,0) 60%);transition:opacity .3s}
+/* page 2: the drone at work */
+.work{display:grid;grid-template-columns:1fr 520px;gap:40px;align-items:center;min-height:calc(100vh - 220px)}
+.feats{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:30px}
+.feat{position:relative;border-radius:24px;padding:22px;min-height:150px;transform-style:preserve-3d;transform:perspective(800px) rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg));transition:transform .25s ease-out,box-shadow .3s}
+.feat .n{font-size:12px;color:var(--soft);font-variant-numeric:tabular-nums}
+.feat b{display:block;margin-top:10px;font-weight:500;font-size:19px;color:var(--ink);letter-spacing:-.01em}
+.feat span{display:block;margin-top:6px;font-size:13.5px;line-height:1.45;color:var(--text)}
+.feat i{position:absolute;right:18px;top:18px;width:38px;height:38px;border-radius:12px;display:grid;place-items:center;background:#fff;color:var(--blue);box-shadow:0 6px 14px rgba(29,58,79,.08)}
+.glass2{background:linear-gradient(160deg,rgba(255,255,255,.55),rgba(255,255,255,.22));border:1px solid rgba(255,255,255,.7);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);box-shadow:inset 0 1px 0 rgba(255,255,255,.6),0 14px 34px rgba(29,58,79,.08)}
+.reticle{position:fixed;z-index:7;left:0;top:0;width:64px;height:64px;margin:-32px 0 0 -32px;pointer-events:none;opacity:0;transition:opacity .3s}
+.reticle.on{opacity:1}
+.reticle svg{width:64px;height:64px;animation:spin 9s linear infinite}
+.reticle small{position:absolute;left:46px;top:46px;white-space:nowrap;font-size:11px;font-variant-numeric:tabular-nums;color:var(--ink);background:rgba(255,255,255,.75);border-radius:8px;padding:3px 7px}
+@keyframes spin{to{transform:rotate(360deg)}}
+/* page 3: about */
+.about{display:grid;grid-template-columns:1fr 440px;gap:48px;align-items:start;margin-top:120px}
+.facts{display:flex;gap:28px;margin-top:30px;flex-wrap:wrap}
+.facts div b{display:block;font-weight:300;font-size:40px;letter-spacing:-.03em;color:var(--ink);font-variant-numeric:tabular-nums}
+.facts div span{font-size:13px;color:var(--text)}
+.ceo{border-radius:30px;padding:26px;transform:perspective(900px) rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg));transition:transform .25s ease-out}
+.ceo .ph{width:140px;height:140px;border-radius:50%;overflow:hidden;background:linear-gradient(135deg,#1a5c9e,#0f3f72);display:grid;place-items:center;color:#fff;font-size:38px;font-weight:300;letter-spacing:.02em;box-shadow:0 12px 26px rgba(15,63,114,.28);border:4px solid #fff}
+.ceo .ph img{width:100%;height:100%;object-fit:cover;display:block}
+.ceo h3{margin-top:18px;font-weight:500;font-size:22px;color:var(--ink);letter-spacing:-.01em}
+.ceo .role{font-size:14px;color:var(--blue);margin-top:2px}
+.ceo ul{list-style:none;margin-top:16px;display:grid;gap:9px}
+.ceo li{display:flex;gap:10px;font-size:13.5px;line-height:1.4;color:var(--text)}
+.ceo li svg{flex:none;margin-top:2px;color:var(--blue)}
+.ceo q{display:block;margin-top:18px;padding-top:16px;border-top:1px solid rgba(29,58,79,.12);font-size:15px;line-height:1.5;color:var(--ink);quotes:none}
+.partners{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:44px}
+.partner{border-radius:24px;padding:22px;display:flex;flex-direction:column;gap:12px;min-height:150px;transform:perspective(800px) rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg));transition:transform .25s ease-out}
+.partner .lg{height:40px;display:flex;align-items:center}
+.partner .lg img{height:34px;width:auto}
+.partner .lg .tx{font-weight:600;font-size:18px;color:var(--ink);display:flex;align-items:center;gap:10px}
+.partner .lg .tx i{width:36px;height:36px;border-radius:10px;display:grid;place-items:center;font-style:normal;font-size:13px;color:#fff;background:linear-gradient(135deg,#2a78c2,#0f3f72)}
+.partner p{font-size:13.5px;line-height:1.45;color:var(--text)}
+.partner small{font-size:12px;color:var(--soft)}
+/* page 4: conclusion */
+.end{display:grid;grid-template-columns:1.25fr 1fr;gap:20px;margin-top:110px}
+.dl{position:relative;border-radius:32px;padding:34px 34px 30px;background:linear-gradient(180deg,#fff,rgba(255,255,255,.9));box-shadow:0 18px 40px rgba(29,58,79,.1);overflow:hidden}
+.dl .orb{width:92px;height:92px;filter:drop-shadow(0 14px 18px rgba(15,63,114,.3))}
+.dl h3{margin-top:18px;font-weight:400;font-size:clamp(28px,3vw,40px);letter-spacing:-.02em;color:var(--ink)}
+.dl p{margin-top:10px;font-size:15px;line-height:1.5;color:var(--text);max-width:44ch}
+.dl .ctas{margin:26px 0 0}
+.dl .meta{margin-top:18px;font-size:12.5px;color:var(--soft)}
+.dl .btn-w{border:1px solid rgba(29,58,79,.16)}
+.contact{border-radius:32px;padding:30px;color:#fff;display:flex;flex-direction:column;gap:14px;background:linear-gradient(160deg,rgba(15,63,114,.88),rgba(26,92,158,.78))!important;border:1px solid rgba(255,255,255,.35)!important}
+.contact h3{font-weight:400;font-size:28px;letter-spacing:-.02em}
+.contact a.row{display:flex;align-items:center;gap:14px;padding:14px 16px;border-radius:18px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.4);font-size:15px;transition:background .2s}
+.contact a.row:hover{background:rgba(255,255,255,.3)}
+.contact a.row i{width:38px;height:38px;border-radius:12px;background:#fff;color:var(--blue);display:grid;place-items:center;flex:none}
+.contact a.row small{display:block;font-size:12px;opacity:.8}
+.end-strip{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:20px;padding:26px 30px;border-radius:28px;background:rgba(255,255,255,.22);border:1px solid rgba(255,255,255,.5)}
+.sitemap{display:flex;flex-wrap:wrap;gap:8px;margin-top:22px}.sitemap a{font-size:13.5px;color:var(--ink);background:rgba(255,255,255,.45);border:1px solid rgba(255,255,255,.7);border-radius:999px;padding:7px 14px;transition:background .2s}.sitemap a:hover{background:#fff}
+.foot{display:flex;flex-wrap:wrap;justify-content:space-between;gap:10px 24px;margin-top:40px;font-size:13px;color:rgba(29,58,79,.75)}
+.foot b{font-family:var(--serif);font-weight:400;font-size:20px;color:var(--ink)}
+/* scroll reveals */
+[data-rv]{opacity:0;transform:translateY(34px);transition:opacity .9s cubic-bezier(.2,.8,.2,1),transform .9s cubic-bezier(.2,.8,.2,1)}
+[data-rv].in{opacity:1;transform:none}
+[data-rv="l"]{transform:translateX(-40px)}[data-rv="r"]{transform:translateX(40px)}[data-rv="s"]{transform:scale(.94)}
+@media (prefers-reduced-motion:reduce){[data-rv]{opacity:1;transform:none;transition:none}.reticle{display:none}}
+@media (max-width:1060px){
+  .page{margin:0 24px 24px;min-height:0}.wrap{padding:84px 24px 44px}
+  .work,.about,.end{grid-template-columns:1fr;min-height:0}.work .ghost-room{display:none}
+  .work{padding-top:46vw}.feats{grid-template-columns:1fr}.partners,.end-strip{grid-template-columns:1fr}.about,.end{margin-top:70px}
+  .reticle{display:none}
+}
+@media (max-width:520px){.page{margin:0 12px 12px;border-radius:24px}.wrap{padding:70px 18px 36px}}
+</style>
+</head>
+<body>
+<canvas id="sky" aria-label="A survey drone flying in, hovering and following the cursor"></canvas>
+<main class="stage" id="stage">
+  <nav class="nav">
+    <a class="logo" href="#"><img src="/assets/img/orb-white.svg" alt="">Grand Geodetics</a>
+    <div class="links"><a class="on" href="#stage">home</a><a href="#services">services</a><a href="#about">about</a><a href="/geoportal/">geoportal</a><a href="/verify/">verify a plan</a><a href="/learn/">learn</a></div>
+    <a class="pill-w" href="#download">Download</a>
+  </nav>
+
+  <div class="ghost rv" aria-hidden="true">GEODETICS</div>
+  <div class="sky-room" aria-hidden="true"></div>
+
+  <section class="copy">
+    <h1 class="rv d1">Precision<span><em>&amp;</em> sustainability</span></h1>
+    <p class="rv d2">Surveying, drone mapping and land software made in Malawi.</p>
+    <div class="ctas rv d3">
+      <a class="btn-b" href="#download">Get Land Studio<i><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></i></a>
+      <a class="btn-w" href="#contact">Contact us</a>
+    </div>
+  </section>
+
+  <div class="badge rv d3" aria-label="What we do">
+    <div class="dots">
+      <span title="Drone mapping"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="5" cy="5" r="2.5"/><circle cx="19" cy="5" r="2.5"/><circle cx="5" cy="19" r="2.5"/><circle cx="19" cy="19" r="2.5"/><path d="M7 7l3 3M17 7l-3 3M7 17l3-3M17 17l-3-3"/><rect x="9.5" y="9.5" width="5" height="5" rx="1.2"/></svg></span>
+      <span title="Surveying"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3v6M8 21l4-12 4 12M6 9h12"/></svg></span>
+      <span title="Mapping"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 6l6-2 6 2 6-2v14l-6 2-6-2-6 2z M9 4v14M15 6v14"/></svg></span>
+      <span title="Land records"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M9 8h6M9 12h6M9 16h3"/></svg></span>
+    </div>
+    <b>Made in Malawi<strong>since <span data-founded>2023</span></strong></b>
+  </div>
+
+  <section class="cards">
+    <a class="card glass c1 rv d3" href="#services">
+      <svg class="pin" viewBox="0 0 76 96" aria-hidden="true"><defs><linearGradient id="pg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffffff" stop-opacity=".95"/><stop offset=".45" stop-color="#cfe2f6" stop-opacity=".8"/><stop offset="1" stop-color="#5d8fc4" stop-opacity=".85"/></linearGradient><linearGradient id="pr" x1="0" x2="1"><stop offset="0" stop-color="#fff" stop-opacity=".9"/><stop offset="1" stop-color="#fff" stop-opacity=".1"/></linearGradient></defs><ellipse cx="38" cy="90" rx="20" ry="4" fill="#1d3a4f" opacity=".18"/><path d="M38 4C20 4 7 17 7 34c0 22 31 52 31 52s31-30 31-52C69 17 56 4 38 4z" fill="url(#pg)" stroke="url(#pr)" stroke-width="2"/><circle cx="38" cy="34" r="12" fill="#fff" opacity=".9"/><circle cx="38" cy="34" r="6" fill="#0b6cf0" opacity=".85"/><path d="M18 22c4-8 12-12 20-12" stroke="#fff" stroke-width="3" stroke-linecap="round" fill="none" opacity=".8"/></svg>
+      <div><span class="chip">Drone mapping</span><h3>Orthophotos &amp; surveys</h3></div>
+      <span class="arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M9 7h8v8"/></svg></span>
+    </a>
+    <a class="card c2 rv d4" href="#download">
+      <span class="notch" aria-hidden="true"></span>
+      <img class="orb" src="/assets/img/orb.svg" alt="">
+      <span class="arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M9 7h8v8"/></svg></span>
+      <h3>Land Studio</h3>
+      <p>Desktop GIS for land offices: survey, adjudication and sketch plans.</p>
+    </a>
+    <a class="card glass c3 rv d5" href="#about">
+      <span class="arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M9 7h8v8"/></svg></span>
+      <div class="big">28<small>districts</small></div>
+      <p>of Malawi, ready in Arc 1950 / UTM 36S from the first launch.</p>
+    </a>
+  </section>
+</main>
+
+<!-- ===== page 2: the drone at work (scroll brings the drone here; it follows your cursor) ===== -->
+<section class="page pg-sky spot" id="services" data-cursor>
+  <div class="ghost2" data-par="-.25" aria-hidden="true">SURVEY</div>
+  <div class="wrap">
+    <div class="work">
+      <div class="ghost-room" aria-hidden="true"></div>
+      <div>
+        <span class="kicker" data-rv>What we do</span>
+        <h2 class="h2" data-rv>From the sky<br><em>to the land register.</em></h2>
+        <p class="lede" data-rv>We fly, survey and model the ground, then turn it into maps, plans and records that land offices can use the same day.</p>
+        <div class="feats">
+          <div class="feat glass2" data-rv data-tilt><span class="n">01</span><i><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M3 15l5-5 4 4 3-3 6 6"/></svg></i><b>Orthomosaics</b><span>Centimetre-level aerial maps for parcels, towns and estates.</span></div>
+          <div class="feat glass2" data-rv data-tilt><span class="n">02</span><i><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 20l5-9 4 6 3-4 6 7z"/><circle cx="17" cy="6" r="2"/></svg></i><b>Terrain &amp; volumes</b><span>Surface models, contours, cut-and-fill and stockpiles.</span></div>
+          <div class="feat glass2" data-rv data-tilt><span class="n">03</span><i><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M2 15c3 0 3-2 5-2s2 2 5 2 3-2 5-2 3 2 5 2M2 19c3 0 3-2 5-2s2 2 5 2 3-2 5-2 3 2 5 2M12 3v7"/></svg></i><b>Flood &amp; hazard maps</b><span>Susceptibility, inundation and risk for planning and response.</span></div>
+          <div class="feat glass2" data-rv data-tilt><span class="n">04</span><i><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 4h16v12H4zM8 20h8M12 16v4"/></svg></i><b>Land software</b><span>Land Studio for Windows and Android field apps for adjudication.</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== page 3: about Grand Geodetics, the CEO and collaborators ===== -->
+<section class="page pg-soft spot" id="about" data-cursor>
+  <div class="ghost2" data-par=".2" aria-hidden="true">GRAND</div>
+  <div class="wrap">
+    <div class="about">
+      <div>
+        <span class="kicker" data-rv>About us</span>
+        <h2 class="h2" data-rv>Mapping Malawi,<br><em>from Liwonde.</em></h2>
+        <p class="lede" data-rv>Grand Geodetics Inc. is a GIS and geospatial consultancy. We survey land, fly drones, analyse floods and build the software land offices use every day — always in Malawi's own coordinate system.</p>
+        <div class="facts" data-rv>
+          <div><b data-count="2023">2023</b><span>founded</span></div>
+          <div><b>3</b><span>companies working as one</span></div>
+          <div><b>36S</b><span>Arc 1950 / UTM, built in</span></div>
+        </div>
+      </div>
+      <article class="ceo glass2" data-rv="r" data-tilt>
+        <div class="ph" id="ceoPh">AK</div>
+        <h3>Asimenye Andrea Kalambo</h3>
+        <div class="role">Founder &amp; CEO, Grand Geodetics · Co-founder &amp; CEO, Ciba Creatives</div>
+        <ul>
+          <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 10L12 5 2 10l10 5 10-5zM6 12v5c3 2 9 2 12 0v-5"/></svg>BSc Geography, University of Malawi</li>
+          <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16v16H4zM8 9h8M8 13h8M8 17h5"/></svg>Certificate in Land Administration, LUANAR</li>
+          <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="5" cy="5" r="2.5"/><circle cx="19" cy="5" r="2.5"/><circle cx="5" cy="19" r="2.5"/><circle cx="19" cy="19" r="2.5"/><rect x="9.5" y="9.5" width="5" height="5" rx="1"/></svg>Certified drone pilot (ADDA Levels 1–2)</li>
+        </ul>
+        <q>Navigating sustainability with precision.</q>
+      </article>
+    </div>
+    <div class="partners">
+      <div class="partner glass2" data-rv data-tilt><div class="lg"><span class="tx"><img src="/assets/img/orb.svg" alt="" style="height:36px">Grand Geodetics</span></div><p>GIS, remote sensing, drone mapping, flood analysis and land software.</p><small>Liwonde, Malawi</small></div>
+      <div class="partner glass2" data-rv data-tilt><div class="lg"><img src="/assets/img/ciba-creatives.png" alt="Ciba Creatives"></div><p>Grand Geodetics is an affiliate of Ciba Creatives, its creative and business home.</p><small>Affiliate group</small></div>
+      <div class="partner glass2" data-rv data-tilt><div class="lg"><span class="tx"><i>NDL</i>Nyasa Digital Labs</span></div><p>Our technology partner — we build apps and cloud systems hand in hand.</p><small>Technology partner</small></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== page 4: conclusion — download, contact, services, footer ===== -->
+<section class="page pg-end" id="download">
+  <div class="ghost2" data-par="-.15" aria-hidden="true">PRECISION</div>
+  <div class="wrap">
+    <div class="end">
+      <div class="dl" data-rv="l">
+        <img class="orb" src="/assets/img/orb.svg" alt="">
+        <h3>Land Studio for Windows</h3>
+        <p>Desktop GIS, survey, adjudication and sketch plans in Arc 1950 / UTM 36S — now open to testers.</p>
+        <div class="ctas">
+          <a class="btn-b" data-dl href="#">Download for testers<i><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v12M6 10l6 6 6-6M5 20h14"/></svg></i></a>
+          <a class="btn-w" data-mail href="#">Ask for access</a>
+        </div>
+        <div class="meta"><span data-ver>Windows 10 and 11 · 64-bit</span> · <a href="/changelog/" style="text-decoration:underline">what's new</a> · <a href="/manual" style="text-decoration:underline">user manual (PDF)</a></div>
+      </div>
+      <div class="contact glass" id="contact" data-rv="r">
+        <h3>Talk to us</h3>
+        <a class="row" data-mail href="#"><i><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg></i><span><small>Email</small><span data-email>grandgeodetics@gmail.com</span></span></a>
+        <a class="row" data-tel href="#"><i><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M5 4h4l2 5-3 2a11 11 0 005 5l2-3 5 2v4a2 2 0 01-2 2A17 17 0 013 6a2 2 0 012-2z"/></svg></i><span><small>Phone &amp; WhatsApp</small><span data-phone>+265 881 035 153</span></span></a>
+        <a class="row" href="https://www.openstreetmap.org/search?query=Liwonde%2C%20Malawi" target="_blank" rel="noopener"><i><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 21s7-6.5 7-12a7 7 0 00-14 0c0 5.5 7 12 7 12z"/><circle cx="12" cy="9" r="2.5"/></svg></i><span><small>Office</small>Liwonde, Malawi</span></a>
+      </div>
+    </div>
+    <div class="end-strip" data-rv>
+      <div class="svc"><i><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="5" cy="5" r="2.5"/><circle cx="19" cy="5" r="2.5"/><circle cx="5" cy="19" r="2.5"/><circle cx="19" cy="19" r="2.5"/><path d="M7 7l3 3M17 7l-3 3M7 17l3-3M17 17l-3-3"/><rect x="9.5" y="9.5" width="5" height="5" rx="1.2"/></svg></i><div><b>Drone mapping</b><span>Orthomosaics, terrain models and volumes.</span></div></div>
+      <div class="svc"><i><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 18c4-1 6-6 8-10s4-5 8-5M4 21h16"/></svg></i><div><b>GIS &amp; hazards</b><span>Flood susceptibility, remote sensing, analysis.</span></div></div>
+      <div class="svc"><i><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="4" width="18" height="13" rx="2"/><path d="M8 21h8M12 17v4"/></svg></i><div><b>Software</b><span>Land Studio for Windows, Android field apps.</span></div></div>
+    </div>
+    <nav class="sitemap" aria-label="More from Grand Geodetics"><a href="/geoportal/">Geoportal</a><a href="/verify/">Verify a plan</a><a href="/data/">Open data</a><a href="/learn/">Tutorials &amp; manual</a><a href="/training/">Training</a><a href="/changelog/">What's new</a><a href="/stats/">Statistics</a><a href="/licence/">Licence</a><a href="/privacy/">Privacy</a></nav>
+    <div class="foot"><b>Navigating sustainability with precision.</b><span>© <span data-year>2026</span> Grand Geodetics Inc. · an affiliate of Ciba Creatives · Liwonde, Malawi</span></div>
+  </div>
+</section>
+
+<div class="reticle" id="reticle" aria-hidden="true"><svg viewBox="0 0 64 64" fill="none" stroke="#0b6cf0" stroke-width="1.5"><circle cx="32" cy="32" r="18" stroke-dasharray="4 5"/><circle cx="32" cy="32" r="3" fill="#0b6cf0"/><path d="M32 4v10M32 50v10M4 32h10M50 32h10"/></svg><small id="retXY"></small></div>
+
+<script src="/assets/js/config.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+/* An original quadcopter survey drone, built from primitives, flown along a choreographed path, then hovering. */
+(() => {
+  const stage = document.getElementById('stage'), canvas = document.getElementById('sky'), page2 = document.getElementById('services'), page3 = document.getElementById('about');
+  const still = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const reveal = () => stage.classList.add('go');
+  if (typeof THREE === 'undefined') { reveal(); return; }
+  const R = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
+  R.setPixelRatio(Math.min(devicePixelRatio, 2)); R.outputEncoding = THREE.sRGBEncoding; R.toneMapping = THREE.ACESFilmicToneMapping; R.toneMappingExposure = 1.05;
+  const scene = new THREE.Scene(), cam = new THREE.PerspectiveCamera(30, 1, .1, 100); cam.position.set(0, 2.1, 9); cam.lookAt(0, .55, 0);
+  scene.add(new THREE.HemisphereLight(0xe9f6ff, 0x4d6b80, .8));
+  const key = new THREE.DirectionalLight(0xffffff, 1.35); key.position.set(-3, 5, 4); scene.add(key);
+  const rim = new THREE.DirectionalLight(0xbfe3ff, 1.1); rim.position.set(4, 2, -4); scene.add(rim);
+  const under = new THREE.DirectionalLight(0x9fc3dc, .5); under.position.set(0, -4, 2); scene.add(under);
+
+  /* materials: graphite shell, satin dark arms, brand-blue accents */
+  const M = (c, r, m, o = {}) => new THREE.MeshStandardMaterial(Object.assign({ color: c, roughness: r, metalness: m }, o));
+  const shell = M(0x262c32, .42, .3), shellTop = M(0x353d45, .3, .35), dark = M(0x161b20, .5, .35), blue = M(0x1a5c9e, .3, .4),
+    lens = M(0x0a1622, .08, .9), glassBlue = M(0x2a78c2, .05, .6, { transparent: true, opacity: .85 }), puck = M(0xe9eef2, .4, .1), prop = M(0x15191d, .5, .2),
+    blur = new THREE.MeshBasicMaterial({ color: 0x3d4f5e, transparent: true, opacity: .16, depthWrite: false, side: THREE.DoubleSide });
+  const drone = new THREE.Group(), body = new THREE.Group(); drone.add(body);
+  const g = (geo, mat, x = 0, y = 0, z = 0) => { const m = new THREE.Mesh(geo, mat); m.position.set(x, y, z); body.add(m); return m; };
+  // fuselage: a tapered, bevelled body seen from above (wider at the back), extruded upwards, with a lighter top deck
+  const plan = (wb, wf, L, r) => { const sh = new THREE.Shape(); sh.moveTo(-wb / 2 + r, -L / 2); sh.lineTo(wb / 2 - r, -L / 2); sh.quadraticCurveTo(wb / 2, -L / 2, wb / 2, -L / 2 + r);
+    sh.lineTo(wf / 2, L / 2 - r); sh.quadraticCurveTo(wf / 2, L / 2, wf / 2 - r, L / 2); sh.lineTo(-wf / 2 + r, L / 2); sh.quadraticCurveTo(-wf / 2, L / 2, -wf / 2, L / 2 - r); sh.lineTo(-wb / 2, -L / 2 + r); sh.quadraticCurveTo(-wb / 2, -L / 2, -wb / 2 + r, -L / 2); return sh; };
+  const ext = (sh, d, bv) => { const geo = new THREE.ExtrudeGeometry(sh, { depth: d, bevelEnabled: true, bevelThickness: bv, bevelSize: bv, bevelSegments: 6, curveSegments: 18 }); geo.rotateX(-Math.PI / 2); return geo; };
+  const fus = g(ext(plan(.66, .5, 1.36, .16), .16, .07), shell, 0, -.12, 0);
+  g(ext(plan(.5, .36, 1.0, .12), .05, .05), shellTop, 0, .1, -.08);
+  g(new THREE.BoxGeometry(.52, .025, .02), blue, 0, -.02, .74);           // blue accent line across the nose
+  [-1, 1].forEach(x => g(new THREE.BoxGeometry(.02, .025, .9), blue, x * .36, -.02, 0));  // and along the flanks
+  // front gimbal camera under the nose (level, framed by a small yoke)
+  const gim = new THREE.Group(); gim.position.set(0, -.2, .66); body.add(gim);
+  const yoke = new THREE.Mesh(new THREE.BoxGeometry(.3, .05, .1), dark); yoke.position.set(0, .07, -.02); gim.add(yoke);
+  const gb = new THREE.Mesh(new THREE.BoxGeometry(.24, .17, .2), dark); gim.add(gb);
+  const lensM = new THREE.Mesh(new THREE.CylinderGeometry(.062, .07, .06, 32), lens); lensM.rotation.x = Math.PI / 2; lensM.position.set(-.035, 0, .12); gim.add(lensM);
+  const lensG = new THREE.Mesh(new THREE.CircleGeometry(.048, 32), glassBlue); lensG.position.set(-.035, 0, .152); gim.add(lensG);
+  const lens2 = new THREE.Mesh(new THREE.CylinderGeometry(.026, .03, .05, 24), lens); lens2.rotation.x = Math.PI / 2; lens2.position.set(.07, .02, .115); gim.add(lens2);
+  // slim obstacle-sensor window across the nose (a dark strip, not "eyes")
+  g(new THREE.BoxGeometry(.3, .035, .02), lens, 0, .02, .76);
+  // RTK antenna puck on top
+  g(new THREE.CylinderGeometry(.05, .05, .1, 20), dark, 0, .2, -.2); g(new THREE.CylinderGeometry(.17, .18, .05, 40), puck, 0, .27, -.2);
+  g(new THREE.TorusGeometry(.17, .01, 8, 40), blue, 0, .295, -.2).rotation.x = Math.PI / 2;
+  // arms, motors, props (front pair higher and forward, rear pair lower and back: a folding-arm layout)
+  const rotors = [];
+  [[1, 1], [-1, 1], [1, -1], [-1, -1]].forEach(([sx, sz]) => {
+    const front = sz > 0, ax = sx * 1.02, az = sz * (front ? .82 : .9), ay = front ? .06 : -.03;
+    const sx0 = sx * .3, sz0 = sz * .32, len = Math.hypot(ax - sx0, az - sz0, ay);
+    const arm = new THREE.Mesh(new THREE.BoxGeometry(.11, .07, len), dark); arm.position.set((ax + sx0) / 2, ay / 2, (az + sz0) / 2);
+    arm.lookAt(new THREE.Vector3(ax, ay, az)); body.add(arm);
+    const mot = g(new THREE.CylinderGeometry(.085, .095, .14, 28), shell, ax, ay + .05, az);
+    g(new THREE.CylinderGeometry(.09, .09, .02, 28), blue, ax, ay + .115, az);
+    const led = g(new THREE.SphereGeometry(.025, 12, 8), new THREE.MeshBasicMaterial({ color: front ? 0x7fc4ff : 0xffffff }), ax, ay - .03, az + (front ? .08 : -.08));
+    const hub = new THREE.Group(); hub.position.set(ax, ay + .14, az); body.add(hub);
+    for (let k = 0; k < 2; k++) { const b = new THREE.Mesh(new THREE.BoxGeometry(.62, .01, .07), prop); b.rotation.y = k * Math.PI; b.position.x = k ? -.31 : .31; b.geometry.translate(0, 0, 0); hub.add(b); }
+    const disc = new THREE.Mesh(new THREE.CircleGeometry(.62, 48), blur); disc.rotation.x = -Math.PI / 2; disc.position.set(ax, ay + .145, az); body.add(disc);
+    rotors.push({ hub, disc, dir: sx * sz }); });
+  // the camera's view, shown as a faint blue cone while the drone follows the cursor on page 2
+  const cone = new THREE.Mesh(new THREE.ConeGeometry(.55, 2.6, 40, 1, true), new THREE.MeshBasicMaterial({ color: 0x3d8be0, transparent: true, opacity: 0, depthWrite: false, side: THREE.DoubleSide, blending: THREE.AdditiveBlending }));
+  cone.geometry.translate(0, -1.3, 0); cone.rotation.x = -Math.PI / 2; cone.position.z = .16; gim.add(cone);
+  scene.add(drone);
+
+  /* choreography: a Catmull-Rom path through key points (x, y, z) with times; heading and bank follow the motion */
+  const P = [[-0.6, 4.2, -7], [-2.9, 1.1, -2.2], [2.6, .55, -3.2], [.9, .75, -.8], [1.8, 1.05, -10], [2.6, .25, -4.5], [-1.6, .1, 3.2], [.15, -.05, 1.2]].map(p => new THREE.Vector3(...p));
+  const T = [0, .85, 1.75, 2.5, 3.25, 4.0, 4.85, 5.9];
+  const curve = new THREE.CatmullRomCurve3(P, false, 'centripetal', .5);
+  const ease = t => t < .5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+  const at = s => { // map seconds to a curve parameter, segment by segment, easing inside segments for the dance feel
+    if (s >= T[T.length - 1]) return 1; let i = 0; while (s > T[i + 1]) i++; const f = (s - T[i]) / (T[i + 1] - T[i]);
+    return (i + (i === T.length - 2 ? ease(f) : f * .55 + ease(f) * .45)) / (T.length - 1); };
+  const HOVER = P[P.length - 1].clone(), P2 = new THREE.Vector3(-1.55, .7, 1.4); let mx = 0, my = 0, narrowV = false;
+  const clamp = (v, a = 0, b = 1) => Math.max(a, Math.min(b, v)), smooth = t => t * t * (3 - 2 * t);
+  addEventListener('pointermove', e => { mx = e.clientX / innerWidth - .5; my = e.clientY / innerHeight - .5; });
+
+  function size() { const w = canvas.clientWidth, h = canvas.clientHeight; R.setSize(w, h, false); cam.aspect = w / h; cam.fov = w / h < 1.1 ? 42 : 30; cam.updateProjectionMatrix();
+    const narrow = w < 1060; narrowV = narrow; P2.set(narrow ? 0 : -1.15, narrow ? 2.6 : .75, narrow ? .2 : 1.0); HOVER.set(narrow ? 0 : .45, narrow ? .55 : .95, narrow ? 3.2 : 1.9); P[P.length - 1].copy(HOVER); curve.updateArcLengths && curve.updateArcLengths(); }
+  addEventListener('resize', size); size();
+
+  const t0 = performance.now(), FLY = T[T.length - 1]; let shown = false, prevPos = curve.getPoint(0), vel = new THREE.Vector3(), yaw = 0, roll = 0, pitch = 0, last = t0;
+  const tmp = new THREE.Vector3(), hov = new THREE.Vector3(), ahead = new THREE.Vector3();
+  function frame(now) {
+    const dt = Math.min(.05, (now - last) / 1000); last = now; const s = still ? FLY + 10 : Math.max(0, (now - t0) / 1000);
+    let pos;
+    if (s < FLY) { const u = at(s); pos = curve.getPoint(u); curve.getPoint(Math.min(1, u + .01), ahead); }
+    else { const h = s - FLY; pos = hov.copy(HOVER).add(new THREE.Vector3(Math.sin(h * .9) * .06 + mx * .35, Math.sin(h * 1.7) * .05 - my * .2, Math.cos(h * .7) * .04)); ahead.copy(pos).add(new THREE.Vector3(mx * .5, 0, 1)); }
+    if (!shown && (s > 4.7 || scrollY > 40)) { shown = true; reveal(); }
+    // scroll: hero → page 2 brings the drone to the left of page 2; leaving page 2 it climbs away
+    const p1 = smooth(clamp(scrollY / Math.max(1, page2.offsetTop - 24))), p3 = smooth(clamp((scrollY - (page3.offsetTop - innerHeight * .95)) / (innerHeight * .6)));
+    if (p1 > 0 || p3 > 0) { pos = pos.clone().lerp(P2, p1); pos.add(new THREE.Vector3(2.4 * p3, 3.6 * p3, -7 * p3)); if (s >= FLY) ahead.copy(pos).add(new THREE.Vector3(mx, -my * .4, 1)); }
+    const v = tmp.copy(pos).sub(prevPos).divideScalar(Math.max(dt, 1e-3)); vel.lerp(v, .15); prevPos = pos.clone();
+    // heading: face the direction of travel during the flight, face the viewer (slightly turned) while hovering
+    const dir = ahead.clone().sub(pos); const wantYaw0 = s < FLY ? Math.atan2(dir.x, dir.z) : -.35 + mx * .5, wantYaw = wantYaw0 + ((narrowV ? 0 : .35) + mx * 1.1 - wantYaw0) * (s < FLY ? 0 : p1);
+    let dy = wantYaw - yaw; dy = Math.atan2(Math.sin(dy), Math.cos(dy)); yaw += dy * Math.min(1, dt * 4);
+    const lateral = vel.x * Math.cos(yaw) - vel.z * Math.sin(yaw), fwd = vel.x * Math.sin(yaw) + vel.z * Math.cos(yaw);
+    roll += ((-lateral * .09) - roll) * Math.min(1, dt * 5); pitch += ((Math.min(.45, Math.max(-.3, fwd * .05))) + (s >= FLY ? my * .1 : 0) - pitch) * Math.min(1, dt * 4);
+    drone.position.copy(pos); drone.rotation.set(0, yaw, 0); body.rotation.set(pitch, 0, roll, 'YXZ');
+    gim.rotation.x = -pitch * .8 + .12 + p1 * (my * .9 + .15); gim.rotation.y = p1 * mx * .7; // level camera; on page 2 it seeks the cursor
+    cone.material.opacity = .07 * p1 * (1 - p3);
+    rotors.forEach(r => { r.hub.rotation.y += r.dir * dt * 60; });
+    // speed and depth blur, like the reference's motion blur and shallow focus
+    const speed = vel.length(), depth = Math.max(0, -pos.z - 3) * .35 + Math.max(0, pos.z - 2.2) * 2.2;
+    canvas.style.filter = still ? '' : `blur(${(Math.min(8, speed * .28 + depth) * (1 - p1 * .85)).toFixed(2)}px)`;
+    canvas.style.opacity = String(1 - p3);
+    // keep the drone inside the rounded frames of the hero and page 2
+    const hr = stage.getBoundingClientRect(), r2 = page2.getBoundingClientRect(), m = innerWidth <= 520 ? 12 : 24;
+    canvas.style.clipPath = `inset(${Math.max(0, hr.top).toFixed(0)}px ${m}px ${Math.max(0, innerHeight - r2.bottom).toFixed(0)}px ${m}px round ${innerWidth <= 520 ? 24 : 32}px)`;
+    if (p3 < 1) R.render(scene, cam); requestAnimationFrame(frame); }
+  requestAnimationFrame(frame);
+  setTimeout(() => { if (!shown) { shown = true; reveal(); } }, 6500);
+})();
+
+/* site behaviour: settings, scroll reveals, parallax ghost words, cursor spotlight, tilt, reticle, CEO photo */
+(() => {
+  const C = window.SITE || {}, email = C.email || 'grandgeodetics@gmail.com', phone = C.phoneDisplay || C.phone || '+265 88 103 5153', tel = C.phone || phone;
+  const mail = 'mailto:' + email + '?subject=' + encodeURIComponent('Land Studio tester access');
+  document.querySelectorAll('[data-dl]').forEach(a => { a.href = C.githubRepo ? '/download' : mail; });  // fallback: /download opens the latest GitHub release page (see _redirects)
+  // one-click download: ask GitHub for the newest release and point the buttons straight at its installer
+  if (C.githubRepo) fetch(`https://api.github.com/repos/${C.githubRepo}/releases?per_page=10`, { headers: { Accept: 'application/vnd.github+json' } }).then(r => r.ok ? r.json() : []).then(list => {
+    const L = (list || []).find(x => !x.draft) || null; if (!L) return; const as = L.assets || [], exe = as.find(x => /\.exe$/i.test(x.name)) || as.find(x => /\.msi$/i.test(x.name)); if (!exe) return;
+    document.querySelectorAll('[data-dl]').forEach(a => { a.href = exe.browser_download_url; a.setAttribute('download', ''); });
+    const mb = (exe.size / 1048576).toFixed(exe.size > 104857600 ? 0 : 1), v = String(L.tag_name || '').replace(/^v/i, '');
+    document.querySelectorAll('[data-ver]').forEach(e => e.textContent = `Version ${v} · ${mb} MB · Windows 10 and 11, 64-bit`);
+  }).catch(() => {});
+  document.querySelectorAll('[data-mail]').forEach(a => a.href = mail);
+  document.querySelectorAll('[data-tel]').forEach(a => a.href = 'tel:' + tel.replace(/\s+/g, ''));
+  document.querySelectorAll('[data-email]').forEach(e => e.textContent = email);
+  document.querySelectorAll('[data-phone]').forEach(e => e.textContent = phone);
+  document.querySelectorAll('[data-founded]').forEach(e => e.textContent = C.founded || 2023);
+  document.querySelectorAll('[data-year]').forEach(e => e.textContent = new Date().getFullYear());
+  // CEO photo: shows img/ceo.jpg when it exists, otherwise the initials stay
+  const ph = document.getElementById('ceoPh'), im = new Image(); im.alt = 'Asimenye Andrea Kalambo'; im.onload = () => { ph.textContent = ''; ph.appendChild(im); }; im.src = '/assets/img/ceo.jpg';
+  const still = matchMedia('(prefers-reduced-motion: reduce)').matches, fine = matchMedia('(pointer: fine)').matches;
+  // reveal on scroll, staggered within each group
+  const io = 'IntersectionObserver' in window ? new IntersectionObserver(es => es.forEach(e => { if (!e.isIntersecting) return; const el = e.target, sib = [...el.parentElement.querySelectorAll(':scope > [data-rv]')]; el.style.transitionDelay = (Math.max(0, sib.indexOf(el)) * .09) + 's'; el.classList.add('in'); io.unobserve(el); }), { threshold: .18, rootMargin: '0px 0px -6% 0px' }) : null;
+  document.querySelectorAll('[data-rv]').forEach(el => io ? io.observe(el) : el.classList.add('in'));
+  // parallax ghost words and active nav link
+  const ghosts = [...document.querySelectorAll('[data-par]')], links = [...document.querySelectorAll('.links a')], secs = ['stage', 'services', 'about', 'download'].map(id => document.getElementById(id));
+  let tick = 0; const onScroll = () => { if (tick) return; tick = requestAnimationFrame(() => { tick = 0; if (!still) ghosts.forEach(g => { const r = g.parentElement.getBoundingClientRect(); g.style.transform = `translate3d(${((r.top + r.height / 2 - innerHeight / 2) * +g.dataset.par).toFixed(1)}px,0,0)`; });
+    let cur = 0; secs.forEach((s, i) => { if (s && s.getBoundingClientRect().top < innerHeight * .45) cur = i; }); links.forEach((a, i) => a.classList.toggle('on', i === cur)); }); };
+  addEventListener('scroll', onScroll, { passive: true }); onScroll();
+  if (!fine || still) return;
+  // spotlight follows the cursor
+  document.querySelectorAll('[data-cursor]').forEach(sec => sec.addEventListener('pointermove', e => { const r = sec.getBoundingClientRect(); sec.style.setProperty('--mx', (e.clientX - r.left) + 'px'); sec.style.setProperty('--my', (e.clientY - r.top) + 'px'); }));
+  // cards lean towards the cursor
+  document.querySelectorAll('[data-tilt]').forEach(c => { c.addEventListener('pointermove', e => { const r = c.getBoundingClientRect(), x = (e.clientX - r.left) / r.width - .5, y = (e.clientY - r.top) / r.height - .5; c.style.setProperty('--rx', (-y * 7).toFixed(2) + 'deg'); c.style.setProperty('--ry', (x * 9).toFixed(2) + 'deg'); });
+    c.addEventListener('pointerleave', () => { c.style.setProperty('--rx', '0deg'); c.style.setProperty('--ry', '0deg'); }); });
+  // survey reticle on page 2: the drone's camera target, with illustrative grid coordinates
+  const ret = document.getElementById('reticle'), xy = document.getElementById('retXY'), p2 = document.getElementById('services'); let tx = 0, ty = 0, cx = 0, cy = 0, on = false;
+  const f = n => Math.round(n).toLocaleString('en-US').replace(/,/g, ' ');
+  p2.addEventListener('pointerenter', () => { on = true; ret.classList.add('on'); }); p2.addEventListener('pointerleave', () => { on = false; ret.classList.remove('on'); });
+  addEventListener('pointermove', e => { tx = e.clientX; ty = e.clientY; if (on) xy.textContent = `E ${f(759200 + tx * 1.3)}  N ${f(8343900 - (ty + scrollY) * 1.3)}`; });
+  (function loop() { cx += (tx - cx) * .18; cy += (ty - cy) * .18; ret.style.transform = `translate3d(${cx}px,${cy}px,0)`; requestAnimationFrame(loop); })();
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Verify a sketch plan · Land Studio</title>
+<meta name="description" content="Check that a Land Studio sketch plan is genuine: scan its QR code with your phone and compare it with the list of issued plans.">
+<link rel="canonical" href="https://grandgeodetics.pages.dev/verify/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Grand Geodetics · Land Studio">
+<meta property="og:locale" content="en_GB">
+<meta property="og:title" content="Verify a sketch plan · Land Studio">
+<meta property="og:description" content="Check that a Land Studio sketch plan is genuine: scan its QR code with your phone and compare it with the list of issued plans.">
+<meta property="og:url" content="https://grandgeodetics.pages.dev/verify/">
+<meta property="og:image" content="https://grandgeodetics.pages.dev/assets/img/og/verify.jpg">
+<meta property="og:image:secure_url" content="https://grandgeodetics.pages.dev/assets/img/og/verify.jpg">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Verify a sketch plan · Land Studio">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Verify a sketch plan · Land Studio">
+<meta name="twitter:description" content="Check that a Land Studio sketch plan is genuine: scan its QR code with your phone and compare it with the list of issued plans.">
+<meta name="twitter:image" content="https://grandgeodetics.pages.dev/assets/img/og/verify.jpg">
+<meta name="twitter:image:alt" content="Verify a sketch plan · Land Studio">
+<meta name="theme-color" content="#a9c5dc">
+<meta name="color-scheme" content="light">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="/favicon-32.png" sizes="32x32" type="image/png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="manifest" href="/site.webmanifest">
+<link rel="preload" href="/assets/fonts/outfit-latin-300-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/outfit-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/assets/css/site.css">
+<link rel="stylesheet" href="/assets/css/sky.css">
+<link rel="preload" href="/assets/img/icons.svg" as="image" type="image/svg+xml">
+<script src="/assets/js/config.js"></script>
+<script src="/assets/js/content.js"></script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<div id="siteHeader"></div><script src="/assets/js/layout.js"></script>
+<noscript><nav class="wrap" aria-label="Main" style="display:flex;flex-wrap:wrap;gap:14px;padding:16px 0;position:relative;z-index:31"><a href="/">Home</a><a href="/#services">Services</a><a href="/learn/">Learn</a><a href="/geoportal/">Geoportal</a><a href="/verify/">Verify a plan</a><a href="/training/">Training</a><a href="/data/">Open data</a><a href="/#contact">Contact</a></nav></noscript>
+<main id="main" class="page">
+<header class="phero" data-ghost="VERIFY" id="top">
+  <div class="ir" aria-hidden="true"><i></i><b></b></div><svg class="contour" viewBox="0 0 1200 700" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><g fill="none" stroke="#fff" stroke-width=".8"><path d="M-50 520C150 470 260 560 430 520S760 380 960 430 1180 520 1260 500"/><path d="M-50 450C140 400 280 490 440 450S770 310 970 360 1180 450 1260 430"/><path d="M-50 380C130 330 300 420 450 380S780 240 980 290 1180 380 1260 360"/><path d="M-50 310C120 260 320 350 460 310S790 170 990 220 1180 310 1260 290"/><path d="M-50 240C110 190 340 280 470 240S800 100 1000 150 1180 240 1260 220"/></g></svg><div class="grain"></div>
+  <div class="wrap">
+    <nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a><svg class="ic" aria-hidden="true"><use href="/assets/img/icons.svg#i-caret-right"/></svg><span aria-current="page">Verify a plan</span></nav>
+    <h1>Is this sketch plan <em>genuine?</em></h1>
+    <p>Scan the QR code on a paper sketch plan. This page checks it against the list of issued plans signed by Grand Geodetics and tells you at once.</p>
+    <div class="meta"><span><svg class="ic" aria-hidden="true"><use href="/assets/img/icons.svg#i-lock"/></svg>Runs on your phone</span><span><svg class="ic" aria-hidden="true"><use href="/assets/img/icons.svg#i-qr-code"/></svg>No app needed</span><span><svg class="ic" aria-hidden="true"><use href="/assets/img/icons.svg#i-eye"/></svg>No names or coordinates</span></div>
+  </div>
+</header>
+<div class="wrap page">
+<section><div class="two">
+<div class="card panel vbox" data-r>
+  <h2><svg class="ic" aria-hidden="true"><use href="/assets/img/icons.svg#i-qr-code"/></svg>Check a plan</h2>
+  <div class="row"><button class="btn btn-hot" type="button" id="vfScan"><svg class="ic" aria-hidden="true"><use href="/assets/img/icons.svg#i-camera"/></svg>Scan with the camera</button><label class="btn btn-soft" for="vfPhoto" style="cursor:pointer"><svg class="ic" aria-hidden="true"><use href="/assets/img/icons.svg#i-image"/></svg>Choose a photo</label><input id="vfPhoto" type="file" accept="image/*" class="sr"></div>
+  <div class="cam" id="vfCam"><video id="vfVideo" muted playsinline></video><div class="aim" aria-hidden="true"></div></div>
+  <p id="vfMsg" class="listinfo" role="status" aria-live="polite"></p>
+  <label for="vfText" style="font-weight:500">Or paste the code from any QR scanner app</label>
+  <textarea id="vfText" spellcheck="false" placeholder="https://grandgeodetics.pages.dev/verify/#GLS1~…  or  GLS1|MCH/SP/2026/0001|…"></textarea>
+  <div class="row"><button class="btn btn-soft" type="button" id="vfGo"><svg class="ic" aria-hidden="true"><use href="/assets/img/icons.svg#i-seal-check"/></svg>Check the plan</button></div>
+  <p class="listinfo" id="vfList">Loading the list of issued plans…</p>
+</div>
+<div class="vbox"><div class="verdict" id="vfOut" role="status" aria-live="polite" tabindex="-1"></div>
+<div class="prose reveal"><h2><svg class="ic" aria-hidden="true"><use href="/assets/img/icons.svg#i-info"/></svg>How it works</h2>
+<p>Every sketch plan made with Land Studio carries a QR code with its reference, map sheet, area, beacons and a fingerprint. The fingerprint is calculated from the plan's coordinates, so changing a beacon or the area changes it.</p>
+<p>The land office sends Grand Geodetics the list of plans it has issued, and Grand Geodetics signs that list. This page checks the signature first, so a copied or edited list is refused.</p>
+<h2><svg class="ic" aria-hidden="true"><use href="/assets/img/icons.svg#i-lock"/></svg>Your privacy</h2><p>The list holds only references, fingerprints, sheets, areas, beacon counts, dates and status. It holds no names, villages or coordinates. The check runs on your phone; the code you scan is never sent to us or anyone else.</p>
+<h2><svg class="ic" aria-hidden="true"><use href="/assets/img/icons.svg#i-warning"/></svg>If a plan does not match</h2><p>Do not rely on it. Contact the land office that issued it, quoting the plan reference, or <a href="/#contact">contact us</a>.</p></div></div>
+</div></section>
+</div>
+</main>
+<footer class="site" id="siteFooter"></footer>
+<script src="/assets/js/site.js" defer></script>
+<script src="/assets/vendor/jsQR.js" defer></script>
+<script src="/assets/js/verify.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+  <url><loc>https://grandgeodetics.pages.dev/</loc><lastmod>2026-11-14</lastmod><changefreq>monthly</changefreq><priority>1.0</priority><image:image><image:loc>https://grandgeodetics.pages.dev/assets/img/og/home.jpg</image:loc></image:image></url>
+  <url><loc>https://grandgeodetics.pages.dev/geoportal/</loc><lastmod>2026-11-14</lastmod><changefreq>monthly</changefreq><priority>0.8</priority><image:image><image:loc>https://grandgeodetics.pages.dev/assets/img/og/geoportal.jpg</image:loc></image:image></url>
+  <url><loc>https://grandgeodetics.pages.dev/verify/</loc><lastmod>2026-11-14</lastmod><changefreq>weekly</changefreq><priority>0.8</priority><image:image><image:loc>https://grandgeodetics.pages.dev/assets/img/og/verify.jpg</image:loc></image:image></url>
+  <url><loc>https://grandgeodetics.pages.dev/learn/</loc><lastmod>2026-11-14</lastmod><changefreq>monthly</changefreq><priority>0.7</priority><image:image><image:loc>https://grandgeodetics.pages.dev/assets/img/og/learn.jpg</image:loc></image:image></url>
+  <url><loc>https://grandgeodetics.pages.dev/training/</loc><lastmod>2026-11-14</lastmod><changefreq>yearly</changefreq><priority>0.5</priority><image:image><image:loc>https://grandgeodetics.pages.dev/assets/img/og/training.jpg</image:loc></image:image></url>
+  <url><loc>https://grandgeodetics.pages.dev/changelog/</loc><lastmod>2026-11-14</lastmod><changefreq>weekly</changefreq><priority>0.5</priority><image:image><image:loc>https://grandgeodetics.pages.dev/assets/img/og/changelog.jpg</image:loc></image:image></url>
+  <url><loc>https://grandgeodetics.pages.dev/data/</loc><lastmod>2026-11-14</lastmod><changefreq>monthly</changefreq><priority>0.6</priority><image:image><image:loc>https://grandgeodetics.pages.dev/assets/img/og/data.jpg</image:loc></image:image></url>
+  <url><loc>https://grandgeodetics.pages.dev/stats/</loc><lastmod>2026-11-14</lastmod><changefreq>weekly</changefreq><priority>0.4</priority><image:image><image:loc>https://grandgeodetics.pages.dev/assets/img/og/stats.jpg</image:loc></image:image></url>
+  <url><loc>https://grandgeodetics.pages.dev/licence/</loc><lastmod>2026-11-14</lastmod><changefreq>yearly</changefreq><priority>0.3</priority><image:image><image:loc>https://grandgeodetics.pages.dev/assets/img/og/licence.jpg</image:loc></image:image></url>
+  <url><loc>https://grandgeodetics.pages.dev/privacy/</loc><lastmod>2026-11-14</lastmod><changefreq>yearly</changefreq><priority>0.3</priority><image:image><image:loc>https://grandgeodetics.pages.dev/assets/img/og/privacy.jpg</image:loc></image:image></url>
+</urlset>
