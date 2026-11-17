@@ -1,10 +1,10 @@
 /* Grand Geodetics — "sky" theme for every page, matching the home page:
    ice-blue sky, framed rounded stages, frosted-glass cards, Manrope text, a big faded serif word behind each page title,
-   bright-blue pill buttons. Loaded after site.css; it only overrides. Light only (the home page has no dark mode). */
+   bright-blue pill buttons. Loaded after site.css; it only overrides. Light only (matches the home page (background C)). */
 @import url('https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,400&family=Manrope:wght@300;400;500;600&display=swap');
 
 :root,:root[data-theme="dark"]{
-  --page:#b9d1de; --paper:rgba(255,255,255,.6); --line:rgba(255,255,255,.75); --text:#1d3a4f; --body:#4c6a7e; --muted:#6f8da0;
+  --page:#93b2c4; --paper:rgba(255,255,255,.6); --line:rgba(255,255,255,.75); --text:#1d3a4f; --body:#3e5a6d; --muted:#516f82;
   --deep:#1d3a4f; --navy:#132b3d; --blue:#0b6cf0; --sky:#3d8be0; --tint:rgba(255,255,255,.45); --head2:#0b6cf0;
   --ox:#0757c7; --ox2:#0b6cf0;
   --ok:#1d7a46; --okbg:rgba(238,248,242,.85); --err:#b42318; --errbg:rgba(253,242,241,.9); --warn:#8a5a00; --warnbg:rgba(255,247,230,.9);
@@ -15,13 +15,13 @@
   color-scheme:light;
 }
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
-  --page:#b9d1de; --paper:rgba(255,255,255,.6); --line:rgba(255,255,255,.75); --text:#1d3a4f; --body:#4c6a7e; --muted:#6f8da0;
+  --page:#93b2c4; --paper:rgba(255,255,255,.6); --line:rgba(255,255,255,.75); --text:#1d3a4f; --body:#3e5a6d; --muted:#516f82;
   --deep:#1d3a4f; --blue:#0b6cf0; --sky:#3d8be0; --tint:rgba(255,255,255,.45); --head2:#0b6cf0;
   --okbg:rgba(238,248,242,.85); --ok:#1d7a46; --errbg:rgba(253,242,241,.9); --err:#b42318; --warnbg:rgba(255,247,230,.9); --warn:#8a5a00; --band:transparent; color-scheme:light}}
 
-html{background:#a9c5dc}
+html{background:#7f9fb6}
 body{font-family:var(--sans);color:var(--text);
-  background:radial-gradient(80% 40% at 50% 0%,#d6e9f1 0%,rgba(214,233,241,0) 70%),linear-gradient(180deg,#c3dbe5 0%,#b6cfdc 45%,#a9c5d6 100%) fixed}
+  background:radial-gradient(80% 40% at 50% 0%,#c3dbe6 0%,rgba(195,219,230,0) 70%),linear-gradient(180deg,#a3bfcd 0%,#92b1c3 45%,#829fb4 100%) fixed}
 .grain{display:none}
 h1,h2,h3{font-family:var(--sans)}
 :focus-visible{outline:2px solid var(--blue);outline-offset:3px}
@@ -42,7 +42,7 @@ h1,h2,h3{font-family:var(--sans)}
 
 /* ---- page title: a framed sky stage with a faded serif word behind ---- */
 .phero{margin:-58px 24px 0;border-radius:32px;color:var(--text);
-  background:radial-gradient(60% 70% at 70% 100%,#e4f4fb 0%,rgba(228,244,251,0) 70%),radial-gradient(60% 70% at 0% 100%,#8fb0c3 0%,rgba(143,176,195,0) 62%),linear-gradient(180deg,#c6dde6 0%,#cfe3ea 55%,#bcd5e0 100%)}
+  background:radial-gradient(60% 70% at 70% 100%,#cfe5ee 0%,rgba(207,229,238,0) 70%),radial-gradient(60% 70% at 0% 100%,#5f8399 0%,rgba(95,131,153,0) 62%),linear-gradient(180deg,#a2bfce 0%,#adc8d5 55%,#98b7c8 100%)}
 .phero .ir{display:none}
 .phero .contour path{stroke:#fff;opacity:.38}
 .phero[data-ghost]::before{content:attr(data-ghost);position:absolute;z-index:0;right:-.04em;bottom:-.14em;font-family:var(--serif);font-weight:400;
@@ -87,7 +87,7 @@ table.data tbody tr:hover{background:rgba(255,255,255,.4)}
 
 /* ---- footer: a framed glass stage ---- */
 footer.site{margin:96px 24px 24px;border-radius:32px;color:var(--body);
-  background:radial-gradient(60% 60% at 80% 0%,#e4f4fb 0%,rgba(228,244,251,0) 70%),linear-gradient(180deg,#bcd5e1 0%,#a9c5d6 100%);box-shadow:inset 0 0 0 1px rgba(255,255,255,.5)}
+  background:radial-gradient(60% 60% at 80% 0%,#c6dfea 0%,rgba(198,223,234,0) 70%),linear-gradient(180deg,#9bb9c9 0%,#87a9bc 100%);box-shadow:inset 0 0 0 1px rgba(255,255,255,.45)}
 footer.site b,.fgrid > div > b,.fbrand .nm{color:var(--text)}
 .fgrid nav a,.fbrand .lines a,.fbrand .lines span,.legal{color:var(--body)}
 .fgrid nav a:hover,.fbrand .lines a:hover{color:var(--text)}
@@ -98,7 +98,7 @@ footer.site b,.fgrid > div > b,.fbrand .nm{color:var(--text)}
 .totop{background:#fff;color:var(--text);box-shadow:0 6px 18px rgba(29,58,79,.14);padding:8px 16px;border-radius:999px}
 
 /* ---- geoportal (full-screen map page) ---- */
-.gp-top{background:linear-gradient(180deg,#c6dde6,#bcd5e0)!important;color:var(--text)!important;border-bottom:1px solid rgba(255,255,255,.7)}
+.gp-top{background:linear-gradient(180deg,#a2bfce,#98b7c8)!important;color:var(--text)!important;border-bottom:1px solid rgba(255,255,255,.7)}
 .gp-top .ir{display:none}
 .gp-top .brand{color:var(--text)!important}.gp-top .brand small{color:var(--muted)!important}
 .gp-panel{background:rgba(255,255,255,.72)!important;-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px)}

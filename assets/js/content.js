@@ -19,6 +19,7 @@ window.CONTENT = {
   nav: [
     { label: 'Services',      href: '/#services',   icon: 'stack',                 spy: 'services' },
     { label: 'About',         href: '/#about',      icon: 'users-three',           spy: 'about' },
+    { label: 'Reviews',       href: '/#reviews',    icon: 'star',                  spy: 'reviews' },
     { label: 'Learn',         href: '/learn/',      icon: 'play-circle',           spy: 'learn' },
     { label: 'Geoportal',     href: '/geoportal/',  icon: 'globe-hemisphere-east', spy: 'geoportal' },
     { label: 'Verify a plan', href: '/verify/',     icon: 'seal-check',            spy: 'resources' },

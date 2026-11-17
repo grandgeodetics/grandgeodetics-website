@@ -13,6 +13,7 @@ Upload this folder to a GitHub repository and connect it to Cloudflare Pages; th
 | Download buttons | they open `/download`, which `_redirects` sends to the latest GitHub release of `githubRepo` |
 | Headline, cards, services, About text, partners | `index.html` — find the words with Ctrl+F on GitHub and edit them |
 | Your portrait | replace `assets/img/ceo.jpg` (square JPG, about 640 × 640) |
+| Published reviews on the home page | `reviews.json` — see the guide, section 5 |
 | Logos on the home page | `assets/img/orb.svg`, `assets/img/orb-white.svg`, `assets/img/ciba-creatives.png` |
 
 All other pages (Verify, Geoportal, Open data, Learn, Training, What's new, Statistics, Licence, Privacy, 404) work as before and are edited through the two files below. The home page no longer uses the home-page lists in `content.js` (numbers, workspaces, steps, video); the menu, footer and the other pages still do.

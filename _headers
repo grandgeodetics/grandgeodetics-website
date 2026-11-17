@@ -31,3 +31,6 @@
 
 /assets/*.pdf
   Cache-Control: public, max-age=86400
+
+/reviews.json
+  Cache-Control: no-cache
